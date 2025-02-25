@@ -15,7 +15,9 @@ test('App should render', () => {
 
 test('Button should render', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App />);
+  expect(screen.getByText(/Current theme:/i)).toBeInTheDocument();
+  expect(screen.getByText(/Show hidden content/i)).toBeInTheDocument();
 });
 
 /**
@@ -24,7 +26,12 @@ test('Button should render', () => {
  */
 test('theme button should update button text', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App />);
+  
+  const themeButton = screen.getByText(/Current theme: light/i);
+  fireEvent.click(themeButton);
+  
+  expect(screen.getByText(/Current theme: dark/i)).toBeInTheDocument();
 });
 
 // BONUS
@@ -32,7 +39,14 @@ test('theme button should update button text', () => {
 // e.g.: expect(element).toHaveStyle('color: #FFF');
 test('theme button should toggle styles', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App />);
+  
+  const themeButton = screen.getByText(/Current theme: light/i);
+  expect(document.body).toHaveStyle('color: #333');
+  expect(document.body).toHaveStyle('background-color: #FFF');
+  fireEvent.click(themeButton);
+  expect(document.body).toHaveStyle('color: #FFF');
+  expect(document.body).toHaveStyle('background-color: #333');
 });
 
 /**
@@ -46,7 +60,14 @@ test('theme button should toggle styles', () => {
  */
 test('hidden button should toggle hidden content', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App />);
+  
+  const toggleButton = screen.getByText(/Show hidden content/i);
+  expect(screen.queryByText(/this content is hidden by default/i)).not.toBeInTheDocument();
+  fireEvent.click(toggleButton);
+  expect(screen.getByText(/this content is hidden by default/i)).toBeInTheDocument();
+  fireEvent.click(toggleButton);
+  expect(screen.queryByText(/this content is hidden by default/i)).not.toBeInTheDocument();
 });
 
 
